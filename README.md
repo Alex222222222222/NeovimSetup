@@ -1,6 +1,10 @@
+# NeoVim setup
+
+Personal NeoVim setup.
+
 ## Introduction
 
-This repo hosts my Nvim configuration for my macbook. Whole configuration is at "init.vim" and ./lua/init.lua
+This repo hosts my nvim configuration for my macbook. Whole configuration is at "init.vim" and ./lua/init.lua
 
 ## Requirements
 
@@ -234,6 +238,14 @@ autocmd BufWritePre * undojoin | Neoformat
 augroup END
 ```
 
+### Lua
+
+Load some configurations from init lua file at `~/.config/nvim/lua/init.lua`
+
+```vim
+autocmd VimEnter *  :lua require('init')
+```
+
 ## Plug-ins
 
 ### Indent guide
@@ -341,7 +353,6 @@ augroup END
 ### coc-nvim
 
 ```vim
-
 " May need for Vim (not Neovim) since coc.nvim calculates byte offset by count
 " utf-8 byte sequence
 set encoding=utf-8
@@ -502,7 +513,6 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
 ```
 
 #### coc-spell-checker / cspell
@@ -513,8 +523,6 @@ coccommand cspell.addtouserdictionary
 
 
 " use <Space a> to enter code action mode
-
-
 ```
 
 config:
@@ -546,5 +554,52 @@ config:
         "rust": "html"
     }
 }
+```
+
+### Lua Line
+
+![lualine](./imgs/3.png)
+
+```vim
+Plug 'nvim-lualine/lualine.nvim'
+" If you want to have icons in your statusline choose one of these
+Plug 'kyazdani42/nvim-web-devicons'
+```
+
+```lua
+-- lualine
+require('lualine').setup()
+```
+
+### Easy Motion
+
+```vim
+" look
+Plug 'Lokaltog/vim-easymotion'
+```
+
+### Search
+
+!(search)[./imgs/5.png]
+
+```vim
+" search
+Plug 'kevinhwang91/nvim-hlslens'
+```
+
+```lua
+-- search status
+local kopts = {noremap = true, silent = true}
+vim.api.nvim_set_keymap('n', 'n',
+    [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    kopts)
+vim.api.nvim_set_keymap('n', 'N',
+    [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>]],
+    kopts)
+vim.api.nvim_set_keymap('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+vim.api.nvim_set_keymap('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+vim.api.nvim_set_keymap('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>]], kopts)
+vim.api.nvim_set_keymap('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>]], kopts)
+vim.api.nvim_set_keymap('n', '<Leader>l', ':noh<CR>', kopts)
 
 ```
